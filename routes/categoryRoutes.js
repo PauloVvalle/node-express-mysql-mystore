@@ -6,7 +6,7 @@ router.post('/', (req, res) => {
     const category_name = req.body;
     categoryController.createCategory(category_name)
         .then((result) => {
-            res.status(200).send('categoria criada com sucesso! id: ' + result.insertId)  
+            res.status(200).json({message: 'Categoria criada com sucesso! Id: ' + result.insertId})
         })
         .catch((error) => {
             res.status(500).send('Error ao inserir categoria!' + error)

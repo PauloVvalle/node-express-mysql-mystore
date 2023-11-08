@@ -1,9 +1,9 @@
-const productsData = require('../data/product')
+const productData = require('../data/product')
 
 
 const getProducts = async () => {
 
-    const products = productsData.getProducts()
+    const products = productData.getProducts()
     if(products) {
         return products;
     } else {
@@ -17,7 +17,7 @@ const getProducts = async () => {
 
 const getProductsById = async (productId) => {
     try {
-        const product = productsData.getProductById(productId)
+        const product = productData.getProductById(productId)
         return product;
 
     // conectar e selecionar os dados no banco
