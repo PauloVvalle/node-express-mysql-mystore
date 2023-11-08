@@ -15,6 +15,18 @@ const getProducts = async () => {
     //acessar o bd e fazer select dos dados
 }
 
+const getProductsById = async (productId) => {
+    try {
+        const product = productsData.getProductById(productId)
+        return product;
+
+    // conectar e selecionar os dados no banco
+    } catch (error) {
+        throw new Error('error ao obter o produto. detalhes: ' + error.message);
+    }
+}
+
 module.exports = {
-    getProducts
+    getProducts,
+    getProductsById
 }
