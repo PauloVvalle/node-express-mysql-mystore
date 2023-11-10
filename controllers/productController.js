@@ -26,7 +26,36 @@ const getProductsById = async (productId) => {
     }
 }
 
+const getProductsPaginated = async (page = 1, pageSize = 20) => {
+    //conectar com data
+    try {
+
+        if(page === 0){
+            page = 1;
+        }
+
+        const startIndex = (page - 1) * pageSize;
+
+        const products = productData.getProductsPaginated(startIndex, pageSize)
+        return products;
+
+    } catch (error) {
+        throw new Error('Erro ao obter produtos paginados! detalhes: ' + error.message)
+    }
+}
+ 
+const getProductsWithCategories = async () => {
+    try{
+        const products = productData.getProductsWithCategories()
+        return products;
+    } catch (error) {
+        throw new Error('Erro ao obter produtos com categorias. detalhes: ' + error.message)
+    }
+}
+
 module.exports = {
     getProducts,
-    getProductsById
+    getProductsById,
+    getProductsWithCategories,
+    getProductsPaginated
 }
