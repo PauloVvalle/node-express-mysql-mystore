@@ -17,6 +17,7 @@ CREATE TABLE products (
     product_count INT,
     category_id INT,
     FOREIGN KEY (category_id) REFERENCES categories(category_id)
+    ON DELETE CASCADE;
 );
 CREATE TABLE users (
     user_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -47,3 +48,11 @@ CREATE TABLE cart_products (
     FOREIGN KEY (cart_id) REFERENCES carts(cart_id),
     FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
+
+ALTER TABLE products
+ADD CONSTRAINT fk_products_categories
+FOREIGN KEY (category_id)
+REFERENCES categories(category_id)
+ON DELETE CASCADE;
+
+

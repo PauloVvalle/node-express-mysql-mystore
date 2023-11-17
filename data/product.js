@@ -70,9 +70,82 @@ const getProductsPaginated = (startIndex, pageSize) => {
     })
 }
 
+const deleteProductsByCategoryId = (category_id) => {
+    return new Promise((resolve, reject) => {
+        const query = 'DELETE FROM products WHERE category_id = ?';
+        const values = [category_id];
+        
+        dbConnection.query(query, values, (err, result) => {
+            if(err){
+                reject(err)
+            } else {
+                resolve(result)
+            }
+        })
+    })
+}
+
+const createProduct = (
+    product_title,
+    product_price,
+    product_description,
+    product_image,
+    product_rate,
+    product_count,
+    category_id
+) => {
+    return new Promise((resolve, reject) => {
+        const query = `
+            INSERT INTO products (
+                product_title,
+                product_price,
+                product_description,
+                product_image,
+                product_rate,
+                product_count,
+                category_id
+            ) VALUES (?,?,?,?,?,?,?)`;
+            values = [
+                product_title,
+                product_price,
+                product_image,
+                product_description,
+                product_rate,
+                product_count,
+                category_id
+            ];
+
+            dbConnection.query(query, values, (err, result) => {
+                if(err){
+                    reject(err);
+                } else {
+                    resolve(result)
+                }
+            })
+    })
+}
+
+const searchProducts = (searchTerm) => {
+    return new Promise((resolve, reject) => {
+        const query = 'SELECT * FROM products WHERE product_title LIKE ? OR product_description LIKE ? ';
+        const searchTermLike = `%${searchTerm}%`;
+
+        dbConnection.query(query, [searchTermLike, searchTermLike], (err, results) => {
+            if(err) {
+                reject(err)
+            } else {
+                resolve(results)
+            }
+        })
+    })
+}
+
 module.exports = {
     getProducts,
     getProductById,
     getProductsWithCategories,
-    getProductsPaginated
+    getProductsPaginated,
+    deleteProductsByCategoryId,
+    createProduct,
+    searchProducts
 }

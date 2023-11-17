@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router();
 const productController = require('../controllers/productController')
+const upload = require('../middlewares/upload')
 
 router.get('/', (req, res) => {
     productController.getProducts()
@@ -12,6 +13,17 @@ router.get('/', (req, res) => {
             res.status(500).send('Erro ao obter produtos!' + error)
         }) 
 
+})
+// localhost:3000/products/search/?searchTerm=
+router.get('/search', (req, res) => {
+    const searchTerm = req.query.searchTerm;
+    productController.searchProducts(searchTerm)
+    .then((products) => {
+        res.json(products)
+    })
+    .catch((error) => {
+        res.status(500).send('erro ao buscar produ por termo. detalhes: ' + error)
+    })
 })
 
 router.get('/paginated', (req, res) => {
@@ -52,5 +64,32 @@ router.get('/:id', (req, res) => {
 
 })
 
+router.post('/', upload.single('product_image'), (req, res) => {
+    const product_image = req.file.filename;
+    const {
+            product_title,
+            product_price,
+            product_description,
+            product_rate,
+            product_count,
+            category_id
+    } = req.body;
+
+    productController.createProduct(
+            product_title,
+            product_price,
+            product_description,
+            product_image,
+            product_rate,
+            product_count,
+            category_id
+    )
+    .then((result) => {
+        res.status(200).json({message: 'produto criado com sucesso', product_id: result.insertId})
+    })
+    .catch((error) => {
+        res.status(500).send('erro ao criar produto. detalhes: ' + error);
+    })
+})
 
 module.exports = router;

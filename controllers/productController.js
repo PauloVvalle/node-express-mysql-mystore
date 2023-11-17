@@ -53,9 +53,48 @@ const getProductsWithCategories = async () => {
     }
 }
 
+const createProduct = async (
+    product_title,
+    product_price,
+    product_description,
+    product_image,
+    product_rate,
+    product_count,
+    category_id
+) => {
+    try {
+        product_rate = product_rate || 0;
+        product_count = product_count || 0;
+
+        const result = productData.createProduct(
+            product_title, 
+            product_price,
+            product_description,
+            product_image,
+            product_rate,
+            product_count,
+            category_id
+        );
+        return result;
+    } catch (error) {
+        throw new Error('erro ao criar o producto. detalhes: ' + error.message)
+    }
+}
+
+const searchProducts = async (searchTerm) => {
+    try {
+        const products = productData.searchProducts(searchTerm)
+        return products;
+    } catch (error) {
+        throw new Error('error ao encontrar produtos')
+    }
+}
+
 module.exports = {
     getProducts,
     getProductsById,
     getProductsWithCategories,
-    getProductsPaginated
+    getProductsPaginated,
+    createProduct,
+    searchProducts
 }
